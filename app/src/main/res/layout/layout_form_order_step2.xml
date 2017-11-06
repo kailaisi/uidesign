@@ -6,7 +6,7 @@
 
         <variable
             name="listener"
-            type="cn.com.tcsl.uidesign.ui.Setp1Listner" />
+            type="cn.com.tcsl.uidesign.ui.Setp2Listner" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -29,6 +29,7 @@
             style="@style/Widget.DateTime"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
+            android:onClick="@{listener::onDateSelected}"
             android:text="@string/prefer_date_today"
             app:layout_constraintEnd_toStartOf="@+id/tv_date2"
             app:layout_constraintHorizontal_bias="0.5"
@@ -42,6 +43,7 @@
             style="@style/Widget.DateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{listener::onDateSelected}"
             android:text="@string/prefered_date_tomorrow"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date1"
             app:layout_constraintEnd_toStartOf="@+id/tv_date3"
@@ -56,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:onClick="@{listener::onDateSelected}"
             android:text="@string/prefered_date_tuesday"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +85,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
+            android:onClick="@{listener::onTimeSelected}"
             android:text="@string/prefered_time_12"
             app:layout_constraintEnd_toStartOf="@+id/tv_time2"
             app:layout_constraintHorizontal_bias="0.5"
@@ -95,6 +99,7 @@
             style="@style/Widget.DateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{listener::onTimeSelected}"
             android:text="@string/prefered_time_23"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time1"
             app:layout_constraintEnd_toStartOf="@+id/tv_time3"
@@ -109,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:onClick="@{listener::onTimeSelected}"
             android:text="@string/prefered_time_34"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time2"
             app:layout_constraintEnd_toEndOf="parent"

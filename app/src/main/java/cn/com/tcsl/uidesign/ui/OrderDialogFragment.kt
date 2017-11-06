@@ -7,18 +7,28 @@ import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.transition.Scene
+import android.transition.Transition
+import android.transition.TransitionInflater
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import cn.com.tcsl.uidesign.R
 import cn.com.tcsl.uidesign.databinding.FragmentOrderformBinding
 import cn.com.tcsl.uidesign.databinding.LayoutFormOrderStep1Binding
+import cn.com.tcsl.uidesign.databinding.LayoutFormOrderStep2Binding
+import cn.com.tcsl.uidesign.databinding.LayoutOrderConfirmBinding
 import cn.com.tcsl.uidesign.model.Product
+import cn.com.tcsl.uidesign.util.SelectedParamsFactory
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 /**
@@ -27,11 +37,17 @@ import cn.com.tcsl.uidesign.model.Product
  * <p/>创建时间: 2017/11/3 13:44
  */
 class OrderDialogFragment : BottomSheetDialogFragment() {
-    lateinit var binding: FragmentOrderformBinding
+    private lateinit var binding: FragmentOrderformBinding
     lateinit var product: Product
     lateinit var selection: OrderSelection
+    lateinit var selectedViewTransition: Transition
+    var clonedViews = arrayListOf<View>()
 
     companion object {
+        private val ID_SIZE_SUFFIX = "tv_size"
+        private val ID_COLOR_SUFFIX = "iv_color"
+        private val ID_DATE_SUFFIX = "tv_date"
+        private val ID_TIME_SUFFIX = "tv_time"
         private val ARG_PRODUCT = "ARG_PRODUCT"
         open fun newInstance(product: Product): OrderDialogFragment {
             val args = Bundle()
@@ -55,36 +71,115 @@ class OrderDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         selection = OrderSelection()
+        selectedViewTransition = TransitionInflater.from(context).inflateTransition(R.transition.transition_selected_view)
         initStepOneView(binding.layoutStep1)
     }
 
     private fun initStepOneView(layoutStep1: LayoutFormOrderStep1Binding?) {
         binding.btnGo.setOnClickListener {
-            binding.txtAction.text = "Book"
-
+            showDeliverForm()
         }
         layoutStep1?.listener = object : Setp1Listner {
             override fun onSizeSelected(v: View) {
-                if (selection.size==0){
-                    selection.size=(v as TextView).text.toString().toInt()
-                    v.isSelected=true
-                    transitionSelectedView(v)
-                }
+                selection.size = (v as TextView).text.toString().toInt()
+                v.isSelected = true
+                transitionSelectedView(v)
             }
 
             override fun onColorSelected(v: View) {
-
-                if (selection.color==0){
-                    selection.color=((v as ImageView).drawable as ColorDrawable).color
-                    v.isSelected=true
-                    transitionSelectedView(v)
-                }
+                selection.color = ((v as ImageView).drawable as ColorDrawable).color
+                v.isSelected = true
+                transitionSelectedView(v)
             }
 
         }
     }
 
+    private fun showDeliverForm() {
+        binding.switcher.displayedChild = 1
+        for (v in clonedViews) {
+            binding.mainContainer.removeView(v)
+        }
+        binding.txtAction.text = "Book"
+        initStepTwoView(binding.layoutStep2)
+
+    }
+
+    private fun initStepTwoView(layoutStep2: LayoutFormOrderStep2Binding?) {
+        binding.txtAction.text = "Go"
+        binding.btnGo.setOnClickListener { changeToConfirm() }
+        layoutStep2?.listener = object : Setp2Listner {
+            override fun onTimeSelected(v: View) {
+                selection.time = (v as TextView).text.toString().replace("\n", " ")
+                v.isSelected = true
+                transitionSelectedView(v)
+            }
+
+            override fun onDateSelected(v: View) {
+                selection.time = (v as TextView).text.toString().replace("\n", " ")
+                v.isSelected = true
+                transitionSelectedView(v)
+            }
+        }
+    }
+
+    private fun changeToConfirm() {
+        var confirmBinding = LayoutOrderConfirmBinding.inflate(LayoutInflater.from(context), binding.mainContainer, false)
+        var sence = Scene(binding.content, confirmBinding.root as ViewGroup)
+        sence.setEnterAction {
+            ViewCompat.animate(confirmBinding.root)
+                    .scaleX(1f).scaleY(1f)
+                    .setInterpolator(OvershootInterpolator())
+                    .setStartDelay(200)
+                    .start()
+        }
+        var transition = TransitionInflater.from(context).inflateTransition(R.transition.transition_confirmation_view)
+        TransitionManager.go(sence, transition)
+
+    }
+
+    /**
+     * 根据view控件生成影像，然后进行移动
+     */
     private fun transitionSelectedView(v: View) {
+        val selectionView = createSelectionView(v)
+        binding.mainContainer.addView(selectionView)
+        clonedViews.add(selectionView)
+        startAnimationView(selectionView, getTargetView(v))
+    }
+
+    private fun getTargetView(v: View): View {
+        val name = resources.getResourceEntryName(v.id)
+        return if (name.startsWith(ID_SIZE_SUFFIX) || name.startsWith(ID_DATE_SUFFIX))
+            binding.txtLabelSize else binding.txtLabelColour
+    }
+
+    private fun startAnimationView(view: View, targetView: View) {
+        view.post {
+            TransitionManager.beginDelayedTransition(binding.root as ViewGroup, selectedViewTransition)
+            view.layoutParams = SelectedParamsFactory.endParams(view, targetView)
+        }
+    }
+
+
+    private fun createSelectionView(v: View): View {
+        var resourceName = resources.getResourceEntryName(v.id)
+        return if (resourceName.startsWith("img_color")) createColorView(v as ImageView) else
+            createTextView(v)
+    }
+
+    private fun createTextView(v: View): View {
+        var fakeView = TextView(context, null, 0)
+        fakeView.text = (v as TextView).text
+        fakeView.layoutParams = SelectedParamsFactory.startTextParams(v)
+        return fakeView
+    }
+
+    private fun createColorView(imageView: ImageView): View {
+        var fakeView = CircleImageView(context, null, 0)
+        fakeView.setImageDrawable(imageView.drawable)
+        fakeView.layoutParams = SelectedParamsFactory.startColorParams(imageView)
+        return fakeView
     }
 
     private fun createProductImageDrawable(product: Product): Drawable? {
@@ -116,9 +211,9 @@ interface Setp1Listner {
 }
 
 interface Setp2Listner {
-    fun onSizeSelected(v: View)
+    fun onDateSelected(v: View)
 
-    fun onColorSelected(v: View)
+    fun onTimeSelected(v: View)
 }
 
 data class OrderSelection(var size: Int = 0, var color: Int = 0, var data: String = "", var time: String = "")
