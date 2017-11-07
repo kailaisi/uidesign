@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="bean"
-            type="cn.com.tcsl.uidesign.model.Product"/>
+            type="cn.com.tcsl.uidesign.model.Product" />
+
+        <variable
+            name="selection"
+            type="cn.com.tcsl.uidesign.ui.OrderSelection" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/btn_go"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/botton_sheet_height"
-        android:background="@color/product_purple">
+        android:layout_height="@dimen/botton_sheet_height">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{bean.name}"
-            android:textSize="18dp"
             android:fontFamily="sans-serif-medium"
-            tools:text="The skyrider"
+            android:text="@{bean.name}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Title"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="The skyrider" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -37,91 +42,110 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@android:drawable/arrow_down_float"
+            tools:ignore="contentDescription" />
 
         <TextView
             android:id="@+id/tv_subtitle"
-            android:drawableLeft="@drawable/vd_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/vd_done"
             android:text="@string/message_order_placed"
+            android:textAppearance="@style/ConfirmationTextAppearance.SubTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:id="@+id/iv_product"
+            android:layout_width="124dp"
+            android:layout_height="124dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginTop="64dp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_color"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="TextView"
+            android:layout_marginTop="8dp"
+            android:text="@{@string/txt_label_conf_color(selection.color)}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            tools:layout_editor_absoluteY="152dp" />
+            app:layout_constraintStart_toEndOf="@+id/iv_product"
+            app:layout_constraintTop_toTopOf="@+id/iv_product"
+            tools:text="Color: #0D0047" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:layout_editor_absoluteX="221dp" />
+            android:text="@{@string/txt_label_conf_date(selection.date)}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
+            app:layout_constraintStart_toStartOf="@+id/tv_color"
+            app:layout_constraintTop_toBottomOf="@+id/tv_color"
+            tools:text="Date: tomorrow 02" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            tools:layout_editor_absoluteX="221dp" />
+            android:text="@{@string/txt_label_conf_size(selection.size)}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            tools:text="Size: 10" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            tools:layout_editor_absoluteX="221dp" />
+            android:text="@{@string/txt_label_conf_time(selection.time)}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
+            app:layout_constraintStart_toStartOf="@+id/tv_size"
+            app:layout_constraintTop_toBottomOf="@+id/tv_size"
+            tools:text="Time: PM 1-2" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/textView9"
-            app:layout_constraintEnd_toStartOf="@+id/textView9"
-            app:layout_constraintHorizontal_bias="0.519"
+            android:layout_marginStart="16dp"
+            android:text="@string/txt_conf_message"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_price"
+            app:layout_constraintEnd_toStartOf="@+id/tv_price"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView9" />
+            app:layout_constraintTop_toTopOf="@+id/tv_price" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="44dp"
-            android:layout_marginTop="80dp"
-            android:text="TextView"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@{bean.price}"
+            android:textAppearance="@style/ConfirmationTextAppearance.Body"
+            android:textSize="26sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            tools:text="$ 23" />
     </android.support.constraint.ConstraintLayout>
 </layout>

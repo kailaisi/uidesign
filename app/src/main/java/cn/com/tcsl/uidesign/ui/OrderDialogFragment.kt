@@ -100,13 +100,12 @@ class OrderDialogFragment : BottomSheetDialogFragment() {
         for (v in clonedViews) {
             binding.mainContainer.removeView(v)
         }
-        binding.txtAction.text = "Book"
         initStepTwoView(binding.layoutStep2)
 
     }
 
     private fun initStepTwoView(layoutStep2: LayoutFormOrderStep2Binding?) {
-        binding.txtAction.text = "Go"
+        binding.txtAction.text = "Book"
         binding.btnGo.setOnClickListener { changeToConfirm() }
         layoutStep2?.listener = object : Setp2Listner {
             override fun onTimeSelected(v: View) {
@@ -116,7 +115,7 @@ class OrderDialogFragment : BottomSheetDialogFragment() {
             }
 
             override fun onDateSelected(v: View) {
-                selection.time = (v as TextView).text.toString().replace("\n", " ")
+                selection.date = (v as TextView).text.toString().replace("\n", " ")
                 v.isSelected = true
                 transitionSelectedView(v)
             }
@@ -124,18 +123,23 @@ class OrderDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun changeToConfirm() {
-        var confirmBinding = LayoutOrderConfirmBinding.inflate(LayoutInflater.from(context), binding.mainContainer, false)
-        var sence = Scene(binding.content, confirmBinding.root as ViewGroup)
-        sence.setEnterAction {
+        val confirmBinding = LayoutOrderConfirmBinding.inflate(LayoutInflater.from(context), binding.mainContainer, false)
+        confirmBinding.bean = product
+        confirmBinding.selection = selection
+        confirmBinding.executePendingBindings()
+        confirmBinding.root.setBackgroundResource(product.color)
+        confirmBinding.ivProduct.setImageResource(product.image)
+        confirmBinding . tvColor.text= getString(R.string.txt_label_conf_color, String.format("#%06X", 0xFFFFFF and product.color))
+        val sense = Scene(binding.content, confirmBinding.root as ViewGroup)
+        sense.setEnterAction {
             ViewCompat.animate(confirmBinding.root)
                     .scaleX(1f).scaleY(1f)
                     .setInterpolator(OvershootInterpolator())
                     .setStartDelay(200)
                     .start()
         }
-        var transition = TransitionInflater.from(context).inflateTransition(R.transition.transition_confirmation_view)
-        TransitionManager.go(sence, transition)
-
+        val transition = TransitionInflater.from(context).inflateTransition(R.transition.transition_confirmation_view)
+        TransitionManager.go(sense, transition)
     }
 
     /**
@@ -216,4 +220,4 @@ interface Setp2Listner {
     fun onTimeSelected(v: View)
 }
 
-data class OrderSelection(var size: Int = 0, var color: Int = 0, var data: String = "", var time: String = "")
+data class OrderSelection(var size: Int = 0, var color: Int = 0, var date: String = "", var time: String = "")
