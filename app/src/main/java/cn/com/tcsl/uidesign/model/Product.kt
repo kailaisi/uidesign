@@ -8,7 +8,7 @@ import java.io.Serializable
  * <p/>作者：wjx
  * <p/>创建时间: 2017/11/3 15:44
  */
-data class Product(var name: String, var price: String, var image: Int, var color: Int):Serializable
+data class Product(var name: String, var price: String, var image: Int, var color: Int, var good: Boolean = false) : Serializable
 
 
 fun creatFakeProducts(): ArrayList<Product> {
