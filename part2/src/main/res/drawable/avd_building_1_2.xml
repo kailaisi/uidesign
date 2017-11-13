@@ -1,0 +1,31 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/vd_building_1"
+    >
+
+    <target android:name="flat1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="@integer/building_anim_duration_millis"
+                android:interpolator="@android:anim/overshoot_interpolator"
+                android:propertyName="translateY"
+                android:valueFrom="-9"
+                android:valueTo="-90"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+    <target android:name="roof1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="@integer/building_anim_duration_millis"
+                android:interpolator="@android:anim/overshoot_interpolator"
+                android:propertyName="translateY"
+                android:valueFrom="-45"
+                android:valueTo="-150"
+                android:valueType="floatType"
+                />
+        </aapt:attr>
+    </target>
+</animated-vector>

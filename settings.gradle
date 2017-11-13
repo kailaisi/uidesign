@@ -1,1 +1,1 @@
-include ':app', ':part2'
+include ':app', ':part2', ':sun'

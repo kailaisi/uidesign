@@ -1,0 +1,33 @@
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/frame_0"
+        android:drawable="@drawable/vd_building_1"
+        app:state_one="false"
+        app:state_two="false" />
+    <item
+        android:id="@+id/frame_1"
+        android:drawable="@drawable/vd_building_2"
+        app:state_one="true" />
+    <item
+        android:id="@+id/frame_2"
+        android:drawable="@drawable/vd_building_3"
+        app:state_two="true" />
+
+    <transition
+        android:drawable="@drawable/avd_building_1_2"
+        android:fromId="@id/frame_0"
+        android:toId="@id/frame_1" />
+    <transition
+        android:drawable="@drawable/avd_building_2_3"
+        android:fromId="@id/frame_1"
+        android:toId="@id/frame_2" />
+    <transition
+        android:drawable="@drawable/avd_building_3_2"
+        android:fromId="@id/frame_2"
+        android:toId="@id/frame_1" />
+    <transition
+        android:drawable="@drawable/avd_building_2_1"
+        android:fromId="@id/frame_1"
+        android:toId="@id/frame_0" />
+</animated-selector>

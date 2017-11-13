@@ -4,15 +4,17 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
 
+
+
     defaultConfig {
-        applicationId "cn.com.tcsl.part2"
+        applicationId "cn.com.tcsl.sun"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        generatedDensities = []
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary=true
+
     }
 
     buildTypes {
@@ -20,9 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    aaptOptions {
-        additionalParameters "--no-version-vectors"
     }
 
 }
