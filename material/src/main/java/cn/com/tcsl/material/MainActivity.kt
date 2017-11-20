@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.Fade
 import android.transition.Slide
 import android.view.Gravity
 import cn.com.tcsl.material.bean.MyAdapter
 import cn.com.tcsl.material.bean.OnItemClickListener
 import cn.com.tcsl.material.bean.Sample
+import cn.com.tcsl.material.bean.SamplesViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,11 +26,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setWindowsAnim() {
         var slide = Slide()
-        slide.duration = 500
+        slide.duration = 150
+        slide.excludeTarget(android.R.id.statusBarBackground,true)
         slide.slideEdge = Gravity.RIGHT
-        window.reenterTransition = slide
-        window.exitTransition = slide
         window.enterTransition = slide
+        val exit=Fade()
+        exit.duration=250
+        window.exitTransition =exit
     }
 
     private fun setRv() {
@@ -43,8 +47,11 @@ class MainActivity : AppCompatActivity() {
         rv.adapter = mAdapter
         mAdapter.mListener = object : OnItemClickListener {
             override fun OnItemClick(position: Int) {
-                var intent = Intent(this@MainActivity, TransitionActivity1::class.java)
-                var compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity)
+                val holder = rv.findViewHolderForLayoutPosition(position) as SamplesViewHolder
+                val view = holder.binding.imageView
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("sample",list[position])
+                val compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity, view, "imageView")
                 startActivity(intent, compat.toBundle())
             }
         }
