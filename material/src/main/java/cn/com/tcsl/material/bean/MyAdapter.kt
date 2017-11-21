@@ -1,9 +1,12 @@
 package cn.com.tcsl.material.bean
 
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import cn.com.tcsl.material.databinding.ItemInfoBinding
+import cn.com.tcsl.material.R
+import com.android.databinding.library.baseAdapters.BR
 
 /**
  * 描述:
@@ -13,10 +16,10 @@ import cn.com.tcsl.material.databinding.ItemInfoBinding
 class MyAdapter(var mDatas: ArrayList<Sample>) : RecyclerView.Adapter<SamplesViewHolder>() {
     var mListener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SamplesViewHolder {
-        var binding = ItemInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        var binding = SamplesViewHolder.creat(LayoutInflater.from(parent.context), parent, viewType)
         var holder = SamplesViewHolder(binding)
         binding.root.setOnClickListener {
-            mListener?.OnItemClick(holder.layoutPosition)
+            mListener?.OnItemClick(holder.adapterPosition)
         }
         return holder
     }
@@ -25,14 +28,23 @@ class MyAdapter(var mDatas: ArrayList<Sample>) : RecyclerView.Adapter<SamplesVie
         holder.bind(mDatas[position])
     }
 
+    override fun getItemViewType(position: Int) = R.layout.item_info
+
+
     override fun getItemCount(): Int {
         return mDatas.size
     }
 }
 
-class SamplesViewHolder(var binding: ItemInfoBinding) : RecyclerView.ViewHolder(binding.root) {
+class SamplesViewHolder(var binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        fun creat(from: LayoutInflater, parent: ViewGroup, b: Int): ViewDataBinding {
+            return DataBindingUtil.inflate(from, b, parent, false)
+        }
+    }
+
     fun bind(sample: Sample) {
-        binding.bean = sample
+        binding.setVariable(BR.bean, sample)
         binding.executePendingBindings()
     }
 }

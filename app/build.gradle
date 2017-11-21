@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     /*databind编译器*/
-    kapt "com.android.databinding:compiler:3.1.0-alpha02"
+    kapt "com.android.databinding:compiler:3.1.0-alpha04"
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile "com.andkulikov:transitionseverywhere:1.7.7"
 }

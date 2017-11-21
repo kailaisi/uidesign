@@ -13,6 +13,7 @@ import cn.com.tcsl.material.bean.OnItemClickListener
 import cn.com.tcsl.material.bean.Sample
 import cn.com.tcsl.material.bean.SamplesViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_info.view.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mAdapter: MyAdapter
@@ -48,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         mAdapter.mListener = object : OnItemClickListener {
             override fun OnItemClick(position: Int) {
                 val holder = rv.findViewHolderForLayoutPosition(position) as SamplesViewHolder
-                val view = holder.binding.imageView
+
+                val view = holder.binding.root.imageView
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 intent.putExtra("sample",list[position])
                 val compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity, view, "imageView")

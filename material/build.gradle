@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "cn.com.tcsl.material"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -33,15 +33,17 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt 'com.android.databinding:compiler:3.0.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    kapt 'com.android.databinding:compiler:3.0.1'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.google.android.gms:play-services-maps:11.6.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:palette-v7:26.1.0'
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.support:palette-v7:27.0.1'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.safframework.log:saf-log:1.2.0'
+    implementation "android.arch.lifecycle:common-java8:1.0.0"
+    implementation "android.arch.lifecycle:extensions:1.0.0"
 }

@@ -1,5 +1,6 @@
 package cn.com.tcsl.material
 
+import android.arch.lifecycle.LiveData
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_detail.*
  */
 class DetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityDetailBinding
+    lateinit var txt:LiveData<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
@@ -27,6 +29,9 @@ class DetailActivity : AppCompatActivity() {
         binding.executePendingBindings()
         setWindowsAnimations()
         tv_des.text = resources.getString(R.string.des)
+        for(i in 1..100){
+
+        }
     }
 
     private fun setWindowsAnimations() {
