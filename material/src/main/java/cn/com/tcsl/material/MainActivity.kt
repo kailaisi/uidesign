@@ -28,20 +28,20 @@ class MainActivity : AppCompatActivity() {
     private fun setWindowsAnim() {
         var slide = Slide()
         slide.duration = 150
-        slide.excludeTarget(android.R.id.statusBarBackground,true)
+        slide.excludeTarget(android.R.id.statusBarBackground, true)
         slide.slideEdge = Gravity.RIGHT
         window.enterTransition = slide
-        val exit=Fade()
-        exit.duration=250
-        window.exitTransition =exit
+        val exit = Fade()
+        exit.duration = 250
+        window.exitTransition = exit
     }
 
     private fun setRv() {
-        var list = arrayListOf(Sample("武雷", R.drawable.a, R.color.sample_blue),
-                Sample("测试", R.drawable.b, R.color.sample_green),
-                Sample("张磊", R.drawable.c, R.color.sample_red),
-                Sample("徐峥", R.drawable.d, R.color.sample_yellow),
-                Sample("黄伯伯", R.drawable.e, R.color.colorPrimary))
+        var list = arrayListOf(Sample("武雷", R.drawable.a, resources.getColor(R.color.sample_blue)),
+                Sample("测试", R.drawable.b, resources.getColor(R.color.sample_green)),
+                Sample("张磊", R.drawable.c, resources.getColor(R.color.sample_red)),
+                Sample("徐峥", R.drawable.d, resources.getColor(R.color.sample_yellow)),
+                Sample("黄伯伯", R.drawable.e, resources.getColor(R.color.colorPrimary)))
         var manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = manager
         mAdapter = MyAdapter(list)
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
                 val view = holder.binding.root.imageView
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra("sample",list[position])
+                intent.putExtra("sample", list[position])
                 val compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity, view, "imageView")
                 startActivity(intent, compat.toBundle())
             }

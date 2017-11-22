@@ -16,7 +16,7 @@ import com.android.databinding.library.baseAdapters.BR
 class MyAdapter(var mDatas: ArrayList<Sample>) : RecyclerView.Adapter<SamplesViewHolder>() {
     var mListener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SamplesViewHolder {
-        var binding = SamplesViewHolder.creat(LayoutInflater.from(parent.context), parent, viewType)
+        var binding = BindingViewHolder.create(LayoutInflater.from(parent.context), parent, viewType)
         var holder = SamplesViewHolder(binding)
         binding.root.setOnClickListener {
             mListener?.OnItemClick(holder.adapterPosition)
@@ -36,14 +36,8 @@ class MyAdapter(var mDatas: ArrayList<Sample>) : RecyclerView.Adapter<SamplesVie
     }
 }
 
-class SamplesViewHolder(var binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-    companion object {
-        fun creat(from: LayoutInflater, parent: ViewGroup, b: Int): ViewDataBinding {
-            return DataBindingUtil.inflate(from, b, parent, false)
-        }
-    }
-
-    fun bind(sample: Sample) {
+class SamplesViewHolder(var binding: ViewDataBinding) : BindingViewHolder<Sample,ViewDataBinding>(binding) {
+    override fun bind(sample: Sample) {
         binding.setVariable(BR.bean, sample)
         binding.executePendingBindings()
     }
