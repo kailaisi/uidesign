@@ -1,6 +1,5 @@
 package cn.com.tcsl.part2
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
