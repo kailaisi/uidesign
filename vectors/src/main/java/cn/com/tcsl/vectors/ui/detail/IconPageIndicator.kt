@@ -17,20 +17,17 @@
 package cn.com.tcsl.vectors.ui.detail
 
 import android.content.Context
-import android.databinding.adapters.ViewBindingAdapter.setPadding
 import android.graphics.Color
 import android.os.Build
 import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
-import android.widget.ImageView
 import android.widget.LinearLayout
 import cn.com.tcsl.vectors.R
 import com.viewpagerindicator.IconPagerAdapter
@@ -42,7 +39,7 @@ import kotlinx.android.synthetic.main.indicator.view.*
  * This widget implements the dynamic action bar tab behavior that can change
  * across different configurations or circumstances.
  */
-class IconPageIndicator: HorizontalScrollView, PageIndicator {
+class IconPageIndicator : HorizontalScrollView, PageIndicator {
     private val mIconsLayout: LinearLayout
 
     private var mViewPager: ViewPager? = null
@@ -50,9 +47,10 @@ class IconPageIndicator: HorizontalScrollView, PageIndicator {
     private var mIconSelector: Runnable? = null
     private var mSelectedIndex: Int = 0
     private var isFirst = true
-    constructor(context: Context): this(context, null)
 
-    constructor(context: Context, attrs: AttributeSet?): this(context, attrs,0)
+    constructor(context: Context) : this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
@@ -69,7 +67,8 @@ class IconPageIndicator: HorizontalScrollView, PageIndicator {
             removeCallbacks(mIconSelector)
         }
         mIconSelector = Runnable {
-            val scrollPos = iconView.left - (width - iconView.width) / 2
+            //将选中的图标移动到中间位置
+            var scrollPos = iconView.width * position
             smoothScrollTo(scrollPos, 0)
             mIconSelector = null
         }
@@ -178,10 +177,11 @@ class IconPageIndicator: HorizontalScrollView, PageIndicator {
             val foreground = child.findViewById<View>(R.id.foreground)
             if (isSelected) {
                 animateToIcon(item)
-                foreground.setBackgroundColor(Color.TRANSPARENT)
-            } else {
                 foreground.setBackgroundColor(Color.BLUE)
+            } else {
+                foreground.setBackgroundColor(Color.TRANSPARENT)
             }
+
         }
     }
 
