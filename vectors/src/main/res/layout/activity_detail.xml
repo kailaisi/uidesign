@@ -27,24 +27,24 @@
               app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
               app:toolbarId="@+id/toolbar">
 
-              <View
-                  android:id="@+id/app_bar_view"
-                  android:layout_width="match_parent"
-                  android:layout_height="200dp"
-                  android:fitsSystemWindows="true" />
-
               <android.support.v7.widget.Toolbar
                   android:id="@+id/toolbar"
                   android:layout_width="match_parent"
                   android:layout_height="?attr/actionBarSize"
                   app:layout_collapseMode="pin" />
+
+              <View
+                  android:id="@+id/app_bar_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="200dp"
+                  android:fitsSystemWindows="true" />
           </android.support.design.widget.CollapsingToolbarLayout>
       </android.support.design.widget.AppBarLayout>
 
-      <com.viewpagerindicator.IconPageIndicator
+      <cn.com.tcsl.vectors.ui.detail.IconPageIndicator
           android:id="@+id/indicator"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
+          android:layout_height="wrap_content"/>
 
       <android.support.v4.view.ViewPager
           android:id="@+id/vp"

@@ -1,5 +1,6 @@
 package cn.com.tcsl.vectors.ui.detail
 
+import android.support.v7.widget.LinearLayoutManager
 import cn.com.tcsl.vectors.R
 import cn.com.tcsl.vectors.base.BaseFragment
 import cn.com.tcsl.vectors.databinding.PageDetailBinding
@@ -16,11 +17,10 @@ class DetailPageFragment : BaseFragment<PageDetailBinding>() {
                 Item("Shire&Lee", "50", "40"),
                 Item("Shire&Lee", "50", "20")
                 )
-        for(i in 1..100){
-            list.add(Item("Shire&Lee"+i, "50", i.toString()))
-        }
+        (1..100).mapTo(list) { Item("Shire&Lee"+ it, "50", it.toString()) }
         var adapter = DetailAdapter(list)
         binding.rv.adapter = adapter
+        binding.rv.layoutManager=LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
     }
 
     override fun getLayout() = R.layout.page_detail

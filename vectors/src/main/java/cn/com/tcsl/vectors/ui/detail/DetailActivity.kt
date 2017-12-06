@@ -17,5 +17,10 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.vp.adapter = VpAdapter(this, supportFragmentManager)
         binding.indicator.setViewPager(binding.vp)
+        binding.vp.setCurrentItem(intent.getIntExtra("position",0),false)
+        supportPostponeEnterTransition()
+        binding.vp.post {
+            supportStartPostponedEnterTransition()
+        }
     }
 }
