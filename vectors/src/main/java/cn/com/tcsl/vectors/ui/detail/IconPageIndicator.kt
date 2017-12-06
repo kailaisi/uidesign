@@ -17,30 +17,32 @@
 package cn.com.tcsl.vectors.ui.detail
 
 import android.content.Context
+import android.databinding.adapters.ViewBindingAdapter.setPadding
+import android.graphics.Color
 import android.os.Build
 import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
+import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import cn.com.tcsl.vectors.R
 import com.viewpagerindicator.IconPagerAdapter
 import com.viewpagerindicator.PageIndicator
 import kotlinx.android.synthetic.main.indicator.view.*
-import android.opengl.ETC1.getWidth
 
 
 /**
  * This widget implements the dynamic action bar tab behavior that can change
  * across different configurations or circumstances.
  */
-class IconPageIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : HorizontalScrollView(context, attrs), PageIndicator {
+class IconPageIndicator: HorizontalScrollView, PageIndicator {
     private val mIconsLayout: LinearLayout
 
     private var mViewPager: ViewPager? = null
@@ -48,12 +50,17 @@ class IconPageIndicator @JvmOverloads constructor(context: Context, attrs: Attri
     private var mIconSelector: Runnable? = null
     private var mSelectedIndex: Int = 0
     private var isFirst = true
+    constructor(context: Context): this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?): this(context, attrs,0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         isHorizontalScrollBarEnabled = false
-
         mIconsLayout = LinearLayout(context)
-        addView(mIconsLayout, FrameLayout.LayoutParams(WRAP_CONTENT, FILL_PARENT, Gravity.CENTER))
+        mIconsLayout.clipChildren = false
+        addView(mIconsLayout, FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
     }
 
     private fun animateToIcon(position: Int) {
@@ -133,10 +140,10 @@ class IconPageIndicator @JvmOverloads constructor(context: Context, attrs: Attri
                 root.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                     override fun onPreDraw(): Boolean {
                         root.viewTreeObserver.removeOnPreDrawListener(this)
-                        val indicatorWidth = root.width
                         val parentWidth = width
+                        val indicatorWidth = root.width
                         val padding = (parentWidth - indicatorWidth) / 2
-                        setPadding(padding,paddingTop,padding,paddingBottom)
+                        setPadding(padding, paddingTop, padding, paddingBottom)
                         return true
                     }
                 })
@@ -168,8 +175,12 @@ class IconPageIndicator @JvmOverloads constructor(context: Context, attrs: Attri
             val child = mIconsLayout.getChildAt(i)
             val isSelected = i == item
             child.isSelected = isSelected
+            val foreground = child.findViewById<View>(R.id.foreground)
             if (isSelected) {
                 animateToIcon(item)
+                foreground.setBackgroundColor(Color.TRANSPARENT)
+            } else {
+                foreground.setBackgroundColor(Color.BLUE)
             }
         }
     }
