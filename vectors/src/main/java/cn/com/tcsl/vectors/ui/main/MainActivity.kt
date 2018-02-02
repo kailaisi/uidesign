@@ -37,6 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         var imageView = holder.binding.root.iv_head
                         list.add(Pair(imageView, "tab_" + i))
                     }
+                    intent.putExtra("position", position)
                     var arrayOfPairs = arrayOfNulls<Pair<View, String>>(list.size)
                     list.toArray(arrayOfPairs)
                     var bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity, *arrayOfPairs).toBundle()

@@ -28,8 +28,11 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import cn.com.tcsl.vectors.R
+import com.safframework.log.LoggerPrinter
+import com.safframework.log.e
 import com.viewpagerindicator.IconPagerAdapter
 import com.viewpagerindicator.PageIndicator
 import kotlinx.android.synthetic.main.indicator.view.*
@@ -116,7 +119,7 @@ class IconPageIndicator : HorizontalScrollView, PageIndicator {
         if (mViewPager != null) {
             mViewPager!!.setOnPageChangeListener(null)
         }
-        val adapter = view.adapter ?: throw IllegalStateException("ViewPager does not have adapter instance.")
+        view.adapter ?: throw IllegalStateException("ViewPager does not have adapter instance.")
         mViewPager = view
         view.setOnPageChangeListener(this)
         notifyDataSetChanged()
@@ -187,5 +190,20 @@ class IconPageIndicator : HorizontalScrollView, PageIndicator {
 
     override fun setOnPageChangeListener(listener: OnPageChangeListener) {
         mListener = listener
+    }
+
+    fun collapse(current: Float, total: Float) {
+        //图标变小
+        var newTop = current / 1.2f
+        var scale = (total - newTop) / total
+        scaleX = scale
+        scaleY = scale
+        //图标变灰
+        var percent = (total - current) / total
+        val alpha = 1 - percent
+        (0 until mIconsLayout.childCount)
+                .map { LoggerPrinter.e(it.toString());mIconsLayout.getChildAt(it) }
+                .map { it.findViewById<ImageView>(R.id.foreground) }
+                .forEach { it.alpha = alpha }
     }
 }
